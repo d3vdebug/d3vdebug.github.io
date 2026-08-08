@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local IDE/editor files
+.kilo/
+.vscode/
+AGENTS.md
+CLAUDE.md
+index.html
