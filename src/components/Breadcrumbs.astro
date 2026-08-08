@@ -1,0 +1,25 @@
+---
+const { title, category } = Astro.props;
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Blogs', href: '/blogs' },
+];
+
+if (category) {
+  crumbs.push({ label: category, href: `/categories/${category}` });
+}
+---
+
+<nav class="flex items-center gap-2 text-sm text-gray-500 mb-8">
+  {crumbs.map((crumb, i) => (
+    <>
+      {i > 0 && <span>/</span>}
+      <a href={crumb.href} class="hover:text-green-400 transition-colors">
+        {crumb.label}
+      </a>
+    </>
+  ))}
+  <span>/</span>
+  <span class="text-gray-400">{title}</span>
+</nav>

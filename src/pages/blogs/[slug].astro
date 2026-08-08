@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import LatestWriteups from '../../components/LatestWriteups.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writeups');
@@ -19,9 +20,24 @@ const SHOW_DATES = false;
 ---
 
 <Layout title={post.data.title} description={post.data.description} image={post.data.image} url={`/blogs/${post.slug}`}>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": `${post.data.title}`,
+      "description": `${post.data.description}`,
+      "image": `${post.data.image ? `https://d3vdebug.github.io${post.data.image}` : ''}`,
+      "url": `https://d3vdebug.github.io/blogs/${post.slug}`,
+      "datePublished": `${post.data.date.toISOString()}`,
+      "author": { "@type": "Person", "name": "DevDebug" },
+      "publisher": { "@type": "Organization", "name": "devdebug", "url": "https://d3vdebug.github.io" }
+    }
+  </script>
   <div class="max-w-7xl mx-auto">
     <div class="grid lg:grid-cols-[1fr_280px] gap-12">
       <article class="max-w-3xl">
+        <Breadcrumbs title={post.data.title} category={post.data.category} />
+        
         {post.data.image && (
           <div class="aspect-video w-full overflow-hidden rounded-xl bg-gray-800 mb-10">
             <img 
