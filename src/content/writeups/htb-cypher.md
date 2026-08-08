@@ -17,7 +17,7 @@ Starting with an nmap scan to identify open ports and services:
 nmap -sC -sV -oA cypher 10.10.10.XXX
 ```
 
-![image](/images/htb-cypher/image1.png)
+![demo site](/images/htb-cypher/image1.png)
 
 ### Results
 

@@ -114,6 +114,28 @@
   }
 }
 
+/* Ensure inline code doesn't show literal backtick pseudo-content (typography plugin overrides) */
+.prose code::before,
+.prose code::after,
+.prose-invert code::before,
+.prose-invert code::after {
+  content: none !important;
+}
+
+/* Tidy inline code appearance */
+.prose code:not(pre code),
+.prose-invert code:not(pre code) {
+  /* Force inline code styling (use !important to override typography plugin) */
+  background-color: #1f2937 !important;
+  color: #4ade80 !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 0.25rem !important;
+  display: inline-block !important;
+  font-size: 0.95em !important;
+  line-height: 1 !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

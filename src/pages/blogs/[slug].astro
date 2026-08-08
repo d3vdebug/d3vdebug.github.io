@@ -238,5 +238,17 @@ const SHOW_DATES = false;
       const readTime = Math.max(1, Math.ceil(wordCount / 200));
       readTimeEl.textContent = `${readTime} min read`;
     }
+
+      // Fix for inline code showing literal backticks: strip leading/trailing backticks,
+      // whitespace, and zero-width chars. Skip block code (`pre > code`).
+      (function stripVisibleBackticks() {
+        const codes = document.querySelectorAll('.prose code');
+        codes.forEach(code => {
+          if (code.closest('pre')) return; // skip code blocks
+          const txt = code.textContent || '';
+          const fixed = txt.replace(/^[\s\u200B`]+|[\s\u200B`]+$/g, '');
+          if (fixed !== txt) code.textContent = fixed;
+        });
+      })();
   </script>
 </Layout>

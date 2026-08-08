@@ -6,5 +6,5 @@ category: "CyLAB"
 tags: ["htb", "windows", "active-directory", "kerberos"]
 platform: "HackTheBox"
 difficulty: "Medium"
-image: "/images/htb-cypher/htb1.png"
+image: "/images/htb-cypher/htb1.webp"
 ---

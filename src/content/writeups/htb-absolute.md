@@ -6,7 +6,7 @@ category: "HackTheBox"
 tags: ["htb", "windows", "sql-injection", "mssql", "rce"]
 platform: "HackTheBox"
 difficulty: "Medium"
-image: "/images/htb-cypher/htb1.png"
+image: "/images/htb-cypher/htb1.webp"
 ---
 
 # Reconnaissance
@@ -61,7 +61,7 @@ xp_cmdshell 'whoami'
 
 ## Privilege Escalation
 
-Already running as `NT AUTHORITY\SYSTEM` via MSSQL service account.
+Already running as <code>NT AUTHORITY\SYSTEM</code> via MSSQL service account.
 
 ## Flags
 

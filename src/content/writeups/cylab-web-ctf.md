@@ -6,7 +6,7 @@ category: "CyLAB"
 tags: ["cylab", "web", "sql-injection", "xss", "authentication-bypass"]
 platform: "CyLAB CTF"
 difficulty: "Medium"
-image: "/images/htb-cypher/htb1.png"
+image: "/images/htb-cypher/htb1.webp"
 ---
 
 # Challenge 1: SQL Injection

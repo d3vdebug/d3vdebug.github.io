@@ -6,7 +6,7 @@ category: "picoCTF"
 tags: ["ctf", "pwn", "buffer-overflow", "ret2libc", "linux"]
 platform: "CyberApoc CTF"
 difficulty: "Hard"
-image: "/images/htb-cypher/htb1.png"
+image: "/images/htb-cypher/htb1.webp"
 ---
 
 # Reconnaissance
