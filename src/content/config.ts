@@ -11,6 +11,7 @@ const writeups = defineCollection({
     difficulty: z.enum(['Easy', 'Medium', 'Hard', 'Insane']).optional(),
     platform: z.string().optional(),
     image: z.string().optional(),
+    unlisted: z.boolean().optional(),
   }),
 });
 

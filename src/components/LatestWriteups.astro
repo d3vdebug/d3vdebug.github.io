@@ -7,6 +7,7 @@ const { currentSlug } = Astro.props;
 const SHOW_DATES = false;
 
 const allPosts = (await getCollection('writeups'))
+  .filter(post => !post.data.unlisted)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 7)
   .filter(post => post.slug !== currentSlug);

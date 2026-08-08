@@ -7,7 +7,7 @@ export async function getStaticPaths() {
   const allPosts = await getCollection('writeups');
   const tags = new Set();
   
-  allPosts.forEach(post => {
+  allPosts.filter(post => !post.data.unlisted).forEach(post => {
     post.data.tags.forEach(tag => tags.add(tag));
   });
   
@@ -20,6 +20,7 @@ export async function getStaticPaths() {
 const { tag, allPosts } = Astro.props;
 
 const filteredPosts = allPosts
+  .filter(post => !post.data.unlisted)
   .filter(post => post.data.tags.includes(tag))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .map(post => ({

@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-const allPosts = await getCollection('writeups');
+const allPosts = (await getCollection('writeups')).filter(post => !post.data.unlisted);
 
 const categoryCounts = allPosts.reduce((acc, post) => {
   acc[post.data.category] = (acc[post.data.category] || 0) + 1;
