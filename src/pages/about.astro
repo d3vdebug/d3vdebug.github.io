@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About" description="About DevDebug - security researcher and CTF player documenting web exploitation, reverse engineering, and red team operations." url="/about">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-semibold text-gray-100 mb-8 tracking-tight">About</h1>
+    
+    <div class="prose prose-invert prose-green max-w-none mb-12">
+      <p class="text-gray-300 text-lg leading-relaxed">
+        Security researcher focused on web application security, active directory attacks, and reverse engineering.
+      </p>
+    </div>
+    
+    <div class="grid sm:grid-cols-2 gap-6 mb-12">
+      <div class="border border-gray-800 p-6 rounded-xl">
+        <h3 class="text-green-400 font-semibold mb-3">Certifications</h3>
+        <ul class="text-gray-400 text-sm space-y-2">
+          <li>• OSCP</li>
+          <li>• OSWE</li>
+          <li>• eCPPT</li>
+        </ul>
+      </div>
+      
+      <div class="border border-gray-800 p-6 rounded-xl">
+        <h3 class="text-green-400 font-semibold mb-3">Focus Areas</h3>
+        <ul class="text-gray-400 text-sm space-y-2">
+          <li>• Web Application Security</li>
+          <li>• Active Directory Attacks</li>
+          <li>• Reverse Engineering</li>
+        </ul>
+      </div>
+    </div>
+    
+    <h2 class="text-xl font-semibold text-gray-100 mb-6">Tools</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">Nmap</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">Burp Suite</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">Ghidra</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">Impacket</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">Metasploit</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">ffuf</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">BloodHound</div>
+      <div class="border border-gray-800 p-3 rounded-lg text-center text-sm text-gray-400">Mimikatz</div>
+    </div>
+    
+    <h2 class="text-xl font-semibold text-gray-100 mb-6">Connect</h2>
+    <div class="flex gap-4">
+      <a href="https://github.com/d3vdebug" target="_blank" class="border border-gray-800 px-5 py-2.5 rounded-lg text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-colors">
+        GitHub
+      </a>
+      <a href="https://twitter.com/d3vdebug" target="_blank" class="border border-gray-800 px-5 py-2.5 rounded-lg text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-colors">
+        Twitter
+      </a>
+    </div>
+  </div>
+</Layout>

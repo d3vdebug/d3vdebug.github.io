@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+
+const { currentSlug } = Astro.props;
+
+// Toggle dates visibility here
+const SHOW_DATES = false;
+
+const allPosts = (await getCollection('writeups'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 7)
+  .filter(post => post.slug !== currentSlug);
+---
+
+<section class="border-t border-gray-800 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <h2 class="text-xl font-semibold text-gray-100 mb-8">Latest Blogs</h2>
+    
+    <div class="grid md:grid-cols-3 gap-6">
+      {allPosts.map(post => (
+          <a href={`/blogs/${post.slug}`} class="block group">
+          <article class="border border-gray-800 bg-gray-900/40 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
+            {post.data.image && (
+              <div class="aspect-video w-full overflow-hidden bg-gray-800">
+                <img 
+                  src={post.data.image} 
+                  alt={post.data.title}
+                  class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                />
+              </div>
+            )}
+            
+            <div class="p-4">
+              {SHOW_DATES && (
+                <div class="flex items-center gap-3 text-xs text-gray-500 mb-2">
+                  <span class="text-green-400 font-medium">{post.data.category}</span>
+                  <span>•</span>
+                  <time>{new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+                </div>
+              )}
+              
+              <h3 class="text-lg font-semibold text-gray-100 mb-2 group-hover:text-green-400 transition-colors">
+                {post.data.title}
+              </h3>
+              
+              <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">
+                {post.data.description}
+              </p>
+              
+              {post.data.difficulty && (
+                <div class="flex items-center mt-4">
+                  <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+                    post.data.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
+                    post.data.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
+                    post.data.difficulty === 'Hard' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
+                    'text-purple-400 bg-purple-400/10 border-purple-400/20'
+                  }`}>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+                      <rect x="1" y="10" width="3" height="5" rx="0.5" opacity="0.4" />
+                      <rect x="5.5" y="7" width="3" height="8" rx="0.5" opacity="0.6" />
+                      <rect x="10" y="4" width="3" height="11" rx="0.5" />
+                    </svg>
+                    <span class="text-xs font-medium">{post.data.difficulty}</span>
+                  </span>
+                </div>
+              )}
+            </div>
+          </article>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

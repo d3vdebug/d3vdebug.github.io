@@ -1,0 +1,226 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import LatestWriteups from '../../components/LatestWriteups.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writeups');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Toggle dates visibility here
+const SHOW_DATES = false;
+---
+
+<Layout title={post.data.title} description={post.data.description} image={post.data.image} url={`/blogs/${post.slug}`}>
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-[1fr_280px] gap-12">
+      <article class="max-w-3xl">
+        {post.data.image && (
+          <div class="aspect-video w-full overflow-hidden rounded-xl bg-gray-800 mb-10">
+            <img 
+              src={post.data.image} 
+              alt={post.data.title}
+              class="w-full h-full object-cover opacity-90"
+            />
+          </div>
+        )}
+        
+        <div class="flex items-center justify-between text-sm text-gray-500 mb-8">
+          <span>By <span class="text-gray-400">DevDebug</span></span>
+          <span id="read-time">Calculating...</span>
+        </div>
+        
+        <header class="mb-10 pb-8 border-b border-gray-800">
+          {SHOW_DATES && (
+            <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
+              <span class="text-green-400 font-medium">{post.data.category}</span>
+              <span>•</span>
+              <time>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
+              {post.data.platform && (
+                <>
+                  <span>•</span>
+                  <span class="text-gray-400">{post.data.platform}</span>
+                </>
+              )}
+              {post.data.difficulty && (
+                <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+                  post.data.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
+                  post.data.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
+                  post.data.difficulty === 'Hard' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
+                  'text-purple-400 bg-purple-400/10 border-purple-400/20'
+                }`}>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+                    <rect x="1" y="10" width="3" height="5" rx="0.5" opacity="0.4" />
+                    <rect x="5.5" y="7" width="3" height="8" rx="0.5" opacity="0.6" />
+                    <rect x="10" y="4" width="3" height="11" rx="0.5" />
+                  </svg>
+                  <span class="text-xs font-medium">{post.data.difficulty}</span>
+                </span>
+              )}
+            </div>
+          )}
+          
+          <h1 class="text-3xl sm:text-4xl font-semibold text-gray-100 mb-4 tracking-tight">
+            {post.data.title}
+          </h1>
+          
+          <p class="text-lg text-gray-400 leading-relaxed">
+            {post.data.description}
+          </p>
+          
+          <div class="flex gap-2 mt-5">
+            {post.data.tags.map(tag => (
+              <span class="text-xs px-2.5 py-1 bg-gray-800 text-gray-400 rounded-md">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </header>
+        
+        <div class="prose prose-invert prose-green max-w-none">
+          <Content />
+        </div>
+      </article>
+      
+      <aside class="hidden lg:block">
+        <div class="sticky top-24">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">CONTENTS</h3>
+          <nav id="toc" class="space-y-1 text-sm">
+            <!-- TOC injected by JS -->
+          </nav>
+        </div>
+      </aside>
+    </div>
+    
+    <div class="h-16"></div>
+    
+    <LatestWriteups currentSlug={post.slug} />
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const contentDiv = document.querySelector('.prose');
+      const toc = document.getElementById('toc');
+      
+      if (!contentDiv || !toc) return;
+      
+      const headings = contentDiv.querySelectorAll('h1, h2, h3');
+      const tocItems = [];
+      
+      headings.forEach((heading, index) => {
+        if (!heading.id) {
+          heading.id = `section-${index}`;
+        }
+        
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        const isH3 = heading.tagName === 'H3';
+        
+        link.className = `block py-1.5 transition-colors ${
+          isH3 ? 'pl-5 text-xs text-gray-500' : 'pl-3 text-gray-400'
+        }`;
+        
+        link.dataset.level = isH3 ? '3' : '2';
+        
+        toc.appendChild(link);
+        tocItems.push({ link, id: heading.id, isH3 });
+      });
+      
+      const setActive = (id) => {
+        tocItems.forEach(item => {
+          const isActive = item.id === id;
+          const isH3 = item.isH3;
+          
+          if (isActive) {
+            item.link.className = `block py-1.5 transition-colors ${
+              isH3 
+                ? 'pl-5 text-xs text-green-400' 
+                : 'pl-3 text-green-400 font-medium'
+            }`;
+            item.link.textContent = `> ${item.link.textContent.replace(/^> /, '')}`;
+          } else {
+            item.link.className = `block py-1.5 transition-colors hover:text-gray-300 ${
+              isH3 
+                ? 'pl-5 text-xs text-gray-500' 
+                : 'pl-3 text-gray-400'
+            }`;
+            item.link.textContent = item.link.textContent.replace(/^> /, '');
+          }
+        });
+      };
+      
+      const onScroll = () => {
+        if (suppressScrollUpdate) return;
+        
+        const scrollMiddle = window.scrollY + (window.innerHeight / 2);
+        let current = tocItems[0]?.id;
+        
+        for (let i = tocItems.length - 1; i >= 0; i--) {
+          const heading = document.getElementById(tocItems[i].id);
+          if (heading) {
+            const rect = heading.getBoundingClientRect();
+            const absoluteTop = rect.top + window.scrollY;
+            if (absoluteTop <= scrollMiddle) {
+              current = tocItems[i].id;
+              break;
+            }
+          }
+        }
+        
+        const docHeight = document.documentElement.scrollHeight;
+        const scrollBottom = window.scrollY + window.innerHeight;
+        if (docHeight - scrollBottom < 100 && tocItems.length > 0) {
+          current = tocItems[tocItems.length - 1].id;
+        }
+        
+        setActive(current);
+      };
+      
+      let suppressScrollUpdate = false;
+      
+      tocItems.forEach(item => {
+        item.link.addEventListener('click', (e) => {
+          e.preventDefault();
+          suppressScrollUpdate = true;
+          setActive(item.id);
+          
+          const heading = document.getElementById(item.id);
+          if (heading) {
+            heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          
+          setTimeout(() => {
+            suppressScrollUpdate = false;
+            onScroll();
+          }, 800);
+        });
+      });
+      
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+      
+      calculateReadTime();
+    });
+    
+    function calculateReadTime() {
+      const prose = document.querySelector('.prose');
+      const readTimeEl = document.getElementById('read-time');
+      if (!prose || !readTimeEl) return;
+      
+      const text = prose.textContent || '';
+      const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+      const wordCount = words.length;
+      const readTime = Math.max(1, Math.ceil(wordCount / 200));
+      readTimeEl.textContent = `${readTime} min read`;
+    }
+  </script>
+</Layout>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://d3vdebug.github.io/sitemap-index.xml

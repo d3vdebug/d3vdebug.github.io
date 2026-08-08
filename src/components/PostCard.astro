@@ -1,0 +1,56 @@
+---
+const { post } = Astro.props;
+
+// Toggle dates visibility here
+const SHOW_DATES = false;
+---
+
+<a href={`/blogs/${post.slug}`} class="block group">
+  <article class="border border-gray-800 bg-gray-900/40 rounded-lg overflow-hidden hover:border-gray-700 transition-colors">
+    {post.image && (
+      <div class="aspect-video w-full overflow-hidden bg-gray-800">
+        <img 
+          src={post.image} 
+          alt={post.title}
+          class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+        />
+      </div>
+    )}
+    
+    <div class="p-4">
+      {SHOW_DATES && (
+        <div class="flex items-center gap-3 text-xs text-gray-500 mb-2">
+          <span class="text-green-400 font-medium">{post.category}</span>
+          <span>•</span>
+          <time>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+        </div>
+      )}
+      
+      <h2 class="text-lg font-semibold text-gray-100 mb-1.5 group-hover:text-green-400 transition-colors leading-snug">
+        {post.title}
+      </h2>
+      
+      <p class="text-gray-400 text-sm leading-relaxed mb-3 line-clamp-2">
+        {post.description}
+      </p>
+      
+      {post.difficulty && (
+        <div class="flex items-center">
+          <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+            post.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
+            post.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
+            post.difficulty === 'Hard' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
+            'text-purple-400 bg-purple-400/10 border-purple-400/20'
+          }`}>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+              <rect x="1" y="10" width="3" height="5" rx="0.5" opacity="0.4" />
+              <rect x="5.5" y="7" width="3" height="8" rx="0.5" opacity="0.6" />
+              <rect x="10" y="4" width="3" height="11" rx="0.5" />
+            </svg>
+            <span class="text-xs font-medium">{post.difficulty}</span>
+          </span>
+        </div>
+      )}
+    </div>
+  </article>
+</a>

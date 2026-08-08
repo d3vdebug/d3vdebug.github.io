@@ -1,0 +1,189 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('writeups'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const postsData = allPosts.map(post => ({
+  slug: post.slug,
+  title: post.data.title,
+  description: post.data.description,
+  date: post.data.date.toISOString(),
+  tags: post.data.tags,
+  category: post.data.category,
+  difficulty: post.data.difficulty,
+  image: post.data.image
+}));
+
+const categories = [...new Set(postsData.map(p => p.category))].sort();
+const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
+---
+
+<Layout title="Blogs" description="Browse all cybersecurity writeups, CTF walkthroughs, and security research articles." url="/blogs">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-2xl font-semibold text-gray-100">All Blogs</h1>
+      
+      <div class="flex items-center gap-3">
+        <select id="category-filter" class="bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-300 text-center focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors appearance-none cursor-pointer" style="background-image: none;">
+          <option value="">All Categories</option>
+          {categories.map(cat => (
+            <option value={cat}>{cat}</option>
+          ))}
+        </select>
+        
+        <select id="difficulty-filter" class="bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-300 text-center focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors appearance-none cursor-pointer" style="background-image: none;">
+          <option value="">All Difficulties</option>
+          {difficulties.map(d => (
+            <option value={d}>{d}</option>
+          ))}
+        </select>
+        
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input 
+            type="search" 
+            id="blog-search"
+            placeholder="Search by title or tag..." 
+            class="bg-gray-900 border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors w-64"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <div id="posts-grid" class="grid md:grid-cols-3 gap-6">
+      <!-- Posts rendered by JS for consistent layout -->
+    </div>
+    
+    <div id="load-more-container" class="mt-10 text-center">
+      <button id="load-more" class="border border-gray-800 px-6 py-3 rounded-lg text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-colors">
+        Load More
+      </button>
+    </div>
+    
+    <p id="no-results" class="hidden text-gray-500 text-center py-12">No blogs found matching your search.</p>
+  </div>
+  
+  <script define:vars={{ posts: postsData }}>
+    const searchInput = document.getElementById('blog-search');
+    const categoryFilter = document.getElementById('category-filter');
+    const difficultyFilter = document.getElementById('difficulty-filter');
+    const postsGrid = document.getElementById('posts-grid');
+    const noResults = document.getElementById('no-results');
+    const loadMoreBtn = document.getElementById('load-more');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('search') || '';
+    const initialCat = urlParams.get('category') || '';
+    const initialDiff = urlParams.get('difficulty') || '';
+    
+    searchInput.value = initialQuery;
+    categoryFilter.value = initialCat;
+    difficultyFilter.value = initialDiff;
+    
+    let currentPosts = [...posts];
+    let visibleCount = 9;
+    const INITIAL_COUNT = 9;
+    const LOAD_MORE_COUNT = 6;
+    
+    const difficultyBadge = (d) => {
+      const colors = {
+        Easy: 'text-green-400 bg-green-400/10 border-green-400/20',
+        Medium: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
+        Hard: 'text-red-400 bg-red-400/10 border-red-400/20',
+        Insane: 'text-purple-400 bg-purple-400/10 border-purple-400/20'
+      };
+      const color = colors[d] || 'text-gray-400 bg-gray-400/10 border-gray-400/20';
+      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${color}">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+          <rect x="1" y="10" width="3" height="5" rx="0.5" opacity="0.4" />
+          <rect x="5.5" y="7" width="3" height="8" rx="0.5" opacity="0.6" />
+          <rect x="10" y="4" width="3" height="11" rx="0.5" />
+        </svg>
+        <span class="text-xs font-medium">${d}</span>
+      </span>`;
+    };
+    
+    const renderPosts = (items, count = items.length) => {
+      if (items.length === 0) {
+        postsGrid.innerHTML = '';
+        noResults.classList.remove('hidden');
+        loadMoreContainer.classList.add('hidden');
+        return;
+      }
+      
+      noResults.classList.add('hidden');
+      const toShow = items.slice(0, count);
+      
+      postsGrid.innerHTML = toShow.map(post => `
+        <a href="/blogs/${post.slug}" class="block group">
+          <article class="border border-gray-800 bg-gray-900/40 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
+            ${post.image ? `
+              <div class="aspect-video w-full overflow-hidden bg-gray-800">
+                <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+              </div>
+            ` : ''}
+            <div class="p-6">
+              <h2 class="text-xl font-semibold text-gray-100 mb-2 group-hover:text-green-400 transition-colors">${post.title}</h2>
+              <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">${post.description}</p>
+              ${post.difficulty ? difficultyBadge(post.difficulty) : ''}
+            </div>
+          </article>
+        </a>
+      `).join('');
+      
+      if (toShow.length >= items.length) {
+        loadMoreContainer.classList.add('hidden');
+      } else {
+        loadMoreContainer.classList.remove('hidden');
+      }
+    };
+    
+    const filterPosts = () => {
+      const query = searchInput.value.toLowerCase().trim();
+      const category = categoryFilter.value;
+      const difficulty = difficultyFilter.value;
+      
+      let filtered = posts;
+      
+      if (category) {
+        filtered = filtered.filter(post => post.category === category);
+      }
+      
+      if (difficulty) {
+        filtered = filtered.filter(post => post.difficulty === difficulty);
+      }
+      
+      if (query) {
+        filtered = filtered.filter(post => 
+          post.title.toLowerCase().includes(query) ||
+          post.tags.some(tag => tag.toLowerCase().includes(query))
+        );
+      }
+      
+      currentPosts = filtered;
+      visibleCount = INITIAL_COUNT;
+      renderPosts(currentPosts, visibleCount);
+    };
+    
+    loadMoreBtn.addEventListener('click', () => {
+      visibleCount += LOAD_MORE_COUNT;
+      renderPosts(currentPosts, visibleCount);
+    });
+    
+    if (initialQuery || initialCat || initialDiff) {
+      filterPosts();
+    } else {
+      renderPosts(posts, INITIAL_COUNT);
+    }
+    
+    searchInput.addEventListener('input', filterPosts);
+    categoryFilter.addEventListener('change', filterPosts);
+    difficultyFilter.addEventListener('change', filterPosts);
+  </script>
+</Layout>
