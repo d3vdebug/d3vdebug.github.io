@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const all = await getCollection('writeups');
+  const tags = new Set(all.flatMap(p => p.data.tags || []));
+
+  const paths = [
+    // one path per tag
+    ...Array.from(tags).map(t => ({ params: { query: t } })),
+    // one path per post slug
+    ...all.map(p => ({ params: { query: p.slug } })),
+  ];
+
+  // de-duplicate
+  const seen = new Set();
+  const uniq = [];
+  for (const p of paths) {
+    const q = p.params.query;
+    if (!seen.has(q)) {
+      seen.add(q);
+      uniq.push(p);
+    }
+  }
+
+  return uniq;
+}
+
+const { query } = Astro.params;
+const allPosts = await getCollection('writeups');
+const results = allPosts.filter(p => {
+  const hay = (p.data.title + ' ' + (p.data.tags || []).join(' ')).toLowerCase();
+  return hay.includes(query.toLowerCase()) || p.slug === query.toLowerCase();
+}).map(p => ({
+  slug: p.slug,
+  title: p.data.title,
+  description: p.data.description,
+  image: p.data.image
+}));
+
+const pageTitle = `Search: ${query}`;
+const pageDesc = `Search results for \"${query}\"`;
+---
+
+<Layout title={pageTitle} description={pageDesc} url={`/search/${query}`}>
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-2xl font-semibold text-gray-100 mb-6">Search results for “{query}”</h1>
+
+    {results.length === 0 ? (
+      <p class="text-gray-500">No results found.</p>
+    ) : (
+      <div class="space-y-4">
+        {results.map(r => (
+          <a href={`/blogs/${r.slug}`} class="block border border-gray-700 rounded-sm p-4 hover:border-green-400/50 transition-colors">
+            <h2 class="text-lg font-medium text-gray-100">{r.title}</h2>
+            <p class="text-sm text-gray-400">{r.description}</p>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>

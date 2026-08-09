@@ -1,12 +1,21 @@
 ---
-title: "CTF Walkthrough: CyberApoc"
-description: "PWN challenge involving buffer overflow with NX bypass using ret2libc on a 64-bit Linux binary."
-date: 2026-08-03
-category: "picoCTF"
-tags: ["ctf", "pwn", "buffer-overflow", "ret2libc", "linux"]
-platform: "CyberApoc CTF"
-difficulty: "Hard"
-image: "/images/htb-cypher/htb1.webp"
+title: 'CTF Walkthrough: CyberApoc'
+description: >-
+  PWN challenge involving buffer overflow with NX bypass using ret2libc on a
+  64-bit Linux binary.
+date: 2026-08-03T00:00:00.000Z
+category: picoCTF
+tags:
+  - ctf
+  - pwn
+  - buffer-overflow
+  - ret2libc
+  - linux
+platform: CyberApoc CTF
+difficulty: Hard
+image: /images/htb-cypher/htb1.webp
+slug: ctf-cyberapoc
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance

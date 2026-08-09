@@ -17,10 +17,10 @@ const allPosts = (await getCollection('writeups'))
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
     <h2 class="text-xl font-semibold text-gray-100 mb-8">Latest Blogs</h2>
     
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center">
       {allPosts.map(post => (
-          <a href={`/blogs/${post.slug}`} class="block group">
-          <article class="border border-gray-800 bg-gray-900/40 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
+          <a href={`/blogs/${post.slug}`} class="block group w-full max-w-md sm:max-w-none">
+          <article class="border border-gray-700 bg-gray-900/40 rounded-sm overflow-hidden hover:border-gray-600 transition-colors w-full">
             {post.data.image && (
               <div class="aspect-video w-full overflow-hidden bg-gray-800">
                 <img 
@@ -56,11 +56,7 @@ const allPosts = (await getCollection('writeups'))
                     post.data.difficulty === 'Hard' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
                     'text-purple-400 bg-purple-400/10 border-purple-400/20'
                   }`}>
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-                      <rect x="1" y="10" width="3" height="5" rx="0.5" opacity="0.4" />
-                      <rect x="5.5" y="7" width="3" height="8" rx="0.5" opacity="0.6" />
-                      <rect x="10" y="4" width="3" height="11" rx="0.5" />
-                    </svg>
+                    <i class="ph ph-chart-bar text-sm"></i>
                     <span class="text-xs font-medium">{post.data.difficulty}</span>
                   </span>
                 </div>

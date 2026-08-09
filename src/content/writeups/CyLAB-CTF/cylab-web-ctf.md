@@ -1,19 +1,28 @@
 ---
-title: "CyLAB CTF: Web Exploitation Challenge"
-description: "Solving web exploitation challenges from CyLAB CTF including SQL injection, XSS, and authentication bypass."
-date: 2026-07-25
-category: "CyLAB"
-tags: ["cylab", "web", "sql-injection", "xss", "authentication-bypass"]
-platform: "CyLAB CTF"
-difficulty: "Medium"
-image: "/images/htb-cypher/htb1.webp"
+title: 'CyLAB CTF: Web Exploitation Challenge'
+description: >-
+  Solving web exploitation challenges from CyLAB CTF including SQL injection,
+  XSS, and authentication bypass.
+date: 2026-07-25T00:00:00.000Z
+category: CyLAB
+tags:
+  - cylab
+  - web
+  - sql-injection
+  - xss
+  - authentication-bypass
+platform: CyLAB CTF
+difficulty: Medium
+image: /images/htb-cypher/htb1.webp
+slug: cylab-web-ctf
+dateModified: '2026-08-09'
 ---
 
 # Challenge 1: SQL Injection
 
 ## Reconnaissance
 
-Found a login form vulnerable to SQL injection:
+Found a login form vulnerable to  a SQL injection:
 
 ```bash
 curl "http://ctf.cylab.example/login?username=admin'--&password=test"

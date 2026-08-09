@@ -24,18 +24,18 @@ const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
 
 <Layout title="Blogs" description="Browse all cybersecurity writeups, CTF walkthroughs, and security research articles." url="/blogs">
   <div class="max-w-7xl mx-auto">
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-col gap-4 mb-8 md:flex-row md:items-center md:justify-between">
       <h1 class="text-2xl font-semibold text-gray-100">All Blogs</h1>
       
-      <div class="flex items-center gap-3">
-        <select id="category-filter" class="bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-300 text-center focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors appearance-none cursor-pointer" style="background-image: none;">
+      <div class="flex flex-col gap-3 w-full md:w-auto md:flex-row md:items-center">
+        <select id="category-filter" class="w-full md:w-auto bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-300 text-center focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors appearance-none cursor-pointer" style="background-image: none;">
           <option value="">All Categories</option>
           {categories.map(cat => (
             <option value={cat}>{cat}</option>
           ))}
         </select>
         
-        <select id="difficulty-filter" class="bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-300 text-center focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors appearance-none cursor-pointer" style="background-image: none;">
+        <select id="difficulty-filter" class="w-full md:w-auto bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-300 text-center focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors appearance-none cursor-pointer" style="background-image: none;">
           <option value="">All Difficulties</option>
           {difficulties.map(d => (
             <option value={d}>{d}</option>
@@ -43,25 +43,23 @@ const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
         </select>
         
         <div class="relative">
-          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-base text-gray-500"></i>
           <input 
             type="search" 
             id="blog-search"
             placeholder="Search by title or tag..." 
-            class="bg-gray-900 border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors w-64"
+            class="w-full md:w-64 bg-gray-900 border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors"
           />
         </div>
       </div>
     </div>
     
-    <div id="posts-grid" class="grid md:grid-cols-3 gap-6">
+    <div id="posts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
       <!-- Posts rendered by JS for consistent layout -->
     </div>
     
     <div id="load-more-container" class="mt-10 text-center">
-      <button id="load-more" class="border border-gray-800 px-6 py-3 rounded-lg text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-colors">
+      <button id="load-more" class="w-full sm:w-auto border border-gray-800 px-6 py-3 rounded-lg text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-colors">
         Load More
       </button>
     </div>
@@ -101,11 +99,7 @@ const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
       };
       const color = colors[d] || 'text-gray-400 bg-gray-400/10 border-gray-400/20';
       return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${color}">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-          <rect x="1" y="10" width="3" height="5" rx="0.5" opacity="0.4" />
-          <rect x="5.5" y="7" width="3" height="8" rx="0.5" opacity="0.6" />
-          <rect x="10" y="4" width="3" height="11" rx="0.5" />
-        </svg>
+        <i class="ph ph-chart-bar text-sm"></i>
         <span class="text-xs font-medium">${d}</span>
       </span>`;
     };
@@ -123,7 +117,7 @@ const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
       
       postsGrid.innerHTML = toShow.map(post => `
         <a href="/blogs/${post.slug}" class="block group">
-          <article class="border border-gray-800 bg-gray-900/40 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
+          <article class="border border-gray-700 bg-gray-900/40 rounded-sm overflow-hidden hover:border-gray-600 transition-colors">
             ${post.image ? `
               <div class="aspect-video w-full overflow-hidden bg-gray-800">
                 <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />

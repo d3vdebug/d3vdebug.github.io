@@ -1,12 +1,20 @@
 ---
-title: "HTB Walkthrough: Cypher"
-description: "Enumeration, exploitation, and privilege escalation on HTB's Cypher machine. A medium-difficulty Windows box featuring Kerberos misconfigurations."
-date: 2026-08-08
-category: "HackTheBox"
-tags: ["htb", "windows", "active-directory", "kerberos"]
-platform: "HackTheBox"
-difficulty: "Medium"
-image: "/images/htb-cypher/htb1.png"
+title: 'HTB Walkthrough: Cypher'
+description: >-
+  Enumeration, exploitation, and privilege escalation on HTB's Cypher machine. A
+  medium-difficulty Windows box featuring Kerberos misconfigurations.
+date: 2026-08-08T00:00:00.000Z
+category: HackTheBox
+tags:
+  - htb
+  - windows
+  - active-directory
+  - kerberos
+platform: HackTheBox
+difficulty: Medium
+image: /images/htb-cypher/htb1.png
+slug: htb-cypher
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance
@@ -14,10 +22,10 @@ image: "/images/htb-cypher/htb1.png"
 Starting with an nmap scan to identify open ports and services:
 
 ```bash
-nmap -sC -sV -oA cypher 10.10.10.XXX
+nmap -sC -sV -oA cypher 10.10.10.XXXnmap -sC -sV -oA cypher 10.10.10.XXXnmap -sC -sV -oA cypher 10.10.10.XXX
 ```
 
-![demo site](/images/htb-cypher/image1.png)
+![image](/images/htb-cypher/image1.png)
 
 ### Results
 
@@ -32,11 +40,12 @@ nmap -sC -sV -oA cypher 10.10.10.XXX
 
 Port 88 indicates an Active Directory environment with Kerberos running. This is a critical finding because Kerberos misconfigurations often lead to privilege escalation opportunities. Port 445 suggests SMB file sharing is available, which we'll enumerate for accessible shares and potential credential exposure. The LDAP service on port 389 will allow us to enumerate domain users and groups.
 
+
 ## Enumeration
 
 The machine exposes SMB and Kerberos on port 88. Let's enumerate the domain:
 
-```bash
+```CLI
 # LDAP enumeration
 ldapsearch -x -h 10.10.10.XXX -D '' -s base namingcontexts
 

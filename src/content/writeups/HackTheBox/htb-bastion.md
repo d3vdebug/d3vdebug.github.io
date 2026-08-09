@@ -1,12 +1,21 @@
 ---
-title: "HTB Walkthrough: Bastion"
-description: "Windows box featuring SMB enumeration, PowerShell downgrade attack, and pass-the-hash to gain initial access."
-date: 2026-08-02
-category: "HackTheBox"
-tags: ["htb", "windows", "smb", "powershell", "pass-the-hash"]
-platform: "HackTheBox"
-difficulty: "Easy"
-image: "/images/htb-cypher/htb1.png"
+title: 'HTB Walkthrough: Bastion'
+description: >-
+  Windows box featuring SMB enumeration, PowerShell downgrade attack, and
+  pass-the-hash to gain initial access.
+date: 2026-08-02T00:00:00.000Z
+category: HackTheBox
+tags:
+  - htb
+  - windows
+  - smb
+  - powershell
+  - pass-the-hash
+platform: HackTheBox
+difficulty: Easy
+image: /images/htb-cypher/htb1.png
+slug: htb-bastion
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance

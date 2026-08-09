@@ -1,12 +1,21 @@
 ---
-title: "Tool Guide: Setting Up Burp Suite for Web App Testing"
-description: "Comprehensive guide to configuring Burp Suite for web application penetration testing, including proxy setup, extensions, and workflows."
-date: 2026-07-22
-category: "Tool Guides"
-tags: ["burp-suite", "web-security", "proxy", "penetration-testing", "guide"]
-platform: ""
-difficulty: "Easy"
-image: "/images/htb-cypher/htb1.png"
+title: 'Tool Guide: Setting Up Burp Suite for Web App Testing'
+description: >-
+  Comprehensive guide to configuring Burp Suite for web application penetration
+  testing, including proxy setup, extensions, and workflows.
+date: 2026-07-22T00:00:00.000Z
+category: Tool Guides
+tags:
+  - burp-suite
+  - web-security
+  - proxy
+  - penetration-testing
+  - guide
+platform: ''
+difficulty: Easy
+image: /images/htb-cypher/htb1.png
+slug: tool-guide-burpsuite
+dateModified: '2026-08-09'
 ---
 
 # Prerequisites

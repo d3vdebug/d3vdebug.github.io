@@ -1,12 +1,21 @@
 ---
-title: "picoCTF 2025: Forensics Writeup"
-description: "Solving file forensics challenges including steganography, file carving, and memory analysis from picoCTF 2025."
-date: 2026-07-30
-category: "picoCTF"
-tags: ["picoctf", "forensics", "steganography", "file-carving", "ctf"]
-platform: "picoCTF"
-difficulty: "Medium"
-image: "/images/htb-cypher/htb1.png"
+title: 'picoCTF 2025: Forensics Writeup'
+description: >-
+  Solving file forensics challenges including steganography, file carving, and
+  memory analysis from picoCTF 2025.
+date: 2026-07-30T00:00:00.000Z
+category: picoCTF
+tags:
+  - picoctf
+  - forensics
+  - steganography
+  - file-carving
+  - ctf
+platform: picoCTF
+difficulty: Medium
+image: /images/htb-cypher/htb1.png
+slug: picoctf-forensics
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance

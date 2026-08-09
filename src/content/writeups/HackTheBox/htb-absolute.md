@@ -1,12 +1,21 @@
 ---
-title: "HTB Walkthrough: Absolute"
-description: "SQL injection in ASP.NET application leading to RCE via xp_cmdshell on an MSSQL backend."
-date: 2026-08-05
-category: "HackTheBox"
-tags: ["htb", "windows", "sql-injection", "mssql", "rce"]
-platform: "HackTheBox"
-difficulty: "Medium"
-image: "/images/htb-cypher/htb1.webp"
+title: 'HTB Walkthrough: Absolute'
+description: >-
+  SQL injection in ASP.NET application leading to RCE via xp_cmdshell on an
+  MSSQL backend.
+date: 2026-08-05T00:00:00.000Z
+category: HackTheBox
+tags:
+  - htb
+  - windows
+  - sql-injection
+  - mssql
+  - rce
+platform: HackTheBox
+difficulty: Medium
+image: /images/htb-cypher/htb1.webp
+slug: htb-absolute
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance

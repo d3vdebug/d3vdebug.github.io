@@ -1,12 +1,21 @@
 ---
-title: "VulnHub Walkthrough: B3nign"
-description: "Linux privilege escalation via exposed Docker socket and SUID binary on a VulnHub machine."
-date: 2026-08-04
-category: "HackTheBox"
-tags: ["vulnhub", "linux", "docker", "suid", "privilege-escalation"]
-platform: "VulnHub"
-difficulty: "Medium"
-image: "/images/htb-cypher/htb1.png"
+title: 'VulnHub Walkthrough: B3nign'
+description: >-
+  Linux privilege escalation via exposed Docker socket and SUID binary on a
+  VulnHub machine.
+date: 2026-08-04T00:00:00.000Z
+category: HackTheBox
+tags:
+  - vulnhub
+  - linux
+  - docker
+  - suid
+  - privilege-escalation
+platform: Vulnhub
+difficulty: Medium
+image: /images/htb-cypher/htb1.png
+slug: vulnhub-b3nign
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance

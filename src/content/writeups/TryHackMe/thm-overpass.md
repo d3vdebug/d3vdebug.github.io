@@ -1,12 +1,20 @@
 ---
-title: "THM Walkthrough: Overpass"
-description: "Privilege escalation via weak sudo permissions and password reuse on TryHackMe's Overpass box."
-date: 2026-08-06
-category: "TryHackMe"
-tags: ["tryhackme", "linux", "sudo", "privilege-escalation"]
-platform: "TryHackMe"
-difficulty: "Easy"
-image: "/images/htb-cypher/htb1.png"
+title: 'THM Walkthrough: Overpass'
+description: >-
+  Privilege escalation via weak sudo permissions and password reuse on
+  TryHackMe's Overpass box.
+date: 2026-08-06T00:00:00.000Z
+category: TryHackMe
+tags:
+  - tryhackme
+  - linux
+  - sudo
+  - privilege-escalation
+platform: TryHackMe
+difficulty: Easy
+image: /images/htb-cypher/htb1.png
+slug: thm-overpass
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance

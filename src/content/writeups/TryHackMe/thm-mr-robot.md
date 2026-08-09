@@ -1,12 +1,21 @@
 ---
-title: "TryHackMe: Mr. Robot CTF"
-description: "Complete Mr. Robot themed CTF on TryHackMe involving web enumeration, WordPress exploitation, and privilege escalation."
-date: 2026-08-01
-category: "TryHackMe"
-tags: ["tryhackme", "linux", "wordpress", "cms", "privilege-escalation"]
-platform: "TryHackMe"
-difficulty: "Easy"
-image: "/images/htb-cypher/htb1.png"
+title: 'TryHackMe: Mr. Robot CTF'
+description: >-
+  Complete Mr. Robot themed CTF on TryHackMe involving web enumeration,
+  WordPress exploitation, and privilege escalation.
+date: 2026-08-01T00:00:00.000Z
+category: TryHackMe
+tags:
+  - tryhackme
+  - linux
+  - wordpress
+  - cms
+  - privilege-escalation
+platform: TryHackMe
+difficulty: Easy
+image: /images/htb-cypher/htb1.png
+slug: thm-mr-robot
+dateModified: '2026-08-09'
 ---
 
 # Reconnaissance
