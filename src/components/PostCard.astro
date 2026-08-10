@@ -18,14 +18,6 @@ const SHOW_DATES = false;
     )}
     
     <div class="p-4">
-      {SHOW_DATES && (
-        <div class="flex items-center gap-3 text-xs text-gray-500 mb-2">
-          <span class="text-green-400 font-medium">{post.category}</span>
-          <span>•</span>
-          <time>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
-        </div>
-      )}
-      
       <h2 class="text-lg font-semibold text-gray-100 mb-1.5 group-hover:text-green-400 transition-colors leading-snug">
         {post.title}
       </h2>
@@ -34,8 +26,13 @@ const SHOW_DATES = false;
         {post.description}
       </p>
       
-      {post.difficulty && (
-        <div class="flex items-center">
+      <div class="flex items-center justify-between gap-2">
+        {post.category && (
+          <span class="inline-flex items-center px-2.5 py-1 rounded-md border border-green-400/20 bg-green-400/10 text-xs font-medium text-green-400">
+            {post.category}
+          </span>
+        )}
+        {post.difficulty && (
           <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
             post.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
             post.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
@@ -45,8 +42,8 @@ const SHOW_DATES = false;
             <i class="ph ph-chart-bar text-sm"></i>
             <span class="text-xs font-medium">{post.difficulty}</span>
           </span>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   </article>
 </a>

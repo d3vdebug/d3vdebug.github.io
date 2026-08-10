@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="About" description="About DevDebug — security researcher documenting web exploitation, reverse engineering, active directory attacks, and CTF writeups." url="/about">
+<Layout title="About" description="About DevDebug — security researcher documenting web exploitation, reverse engineering, active directory attacks, and CTF writeups." url="/about" breadcrumbs={[{ name: 'Home', item: `${Astro.site}/` }, { name: 'About', item: `${Astro.site}/about` }]}>
   <div class="max-w-2xl mx-auto space-y-6">
     <div class="border border-gray-800 bg-gray-900/40 rounded-2xl p-8">
       <div class="flex flex-col items-center text-center">

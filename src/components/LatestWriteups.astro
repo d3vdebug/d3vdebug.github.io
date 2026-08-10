@@ -9,8 +9,8 @@ const SHOW_DATES = false;
 const allPosts = (await getCollection('writeups'))
   .filter(post => !post.data.unlisted)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 7)
-  .filter(post => post.slug !== currentSlug);
+  .filter(post => post.slug !== currentSlug)
+  .slice(0, 3);
 ---
 
 <section class="border-t border-gray-800 pt-16 pb-8">
@@ -48,8 +48,13 @@ const allPosts = (await getCollection('writeups'))
                 {post.data.description}
               </p>
               
-              {post.data.difficulty && (
-                <div class="flex items-center mt-4">
+              <div class="flex items-center justify-between gap-2 mt-4">
+                {post.data.category && (
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-md border border-green-400/20 bg-green-400/10 text-xs font-medium text-green-400">
+                    {post.data.category}
+                  </span>
+                )}
+                {post.data.difficulty && (
                   <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
                     post.data.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
                     post.data.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
@@ -59,8 +64,8 @@ const allPosts = (await getCollection('writeups'))
                     <i class="ph ph-chart-bar text-sm"></i>
                     <span class="text-xs font-medium">{post.data.difficulty}</span>
                   </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </article>
         </a>

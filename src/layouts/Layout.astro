@@ -5,10 +5,53 @@ interface Props {
   image?: string;
   url?: string;
   robots?: string;
+  breadcrumbs?: { name: string; item: string }[];
 }
 
-const { title, description = 'Detailed cybersecurity writeups, CTF challenge walkthroughs, tool guides, and vulnerability analysis by devdebug.', image = '/og-image.svg', url = Astro.url.pathname, robots = 'index, follow' } = Astro.props;
+const { 
+  title, 
+  description = 'Detailed cybersecurity writeups, CTF challenge walkthroughs, tool guides, and vulnerability analysis by devdebug.', 
+  image = '/og-page.png', 
+  url = Astro.url.pathname, 
+  robots = 'index, follow',
+  breadcrumbs = [
+    { name: 'Home', item: `${Astro.site}/` }
+  ]
+} = Astro.props;
+
 import '../styles/global.css';
+
+const siteUrl = Astro.site!.toString();
+
+const absoluteUrl = (path: string) => new URL(path, siteUrl).toString();
+
+const websiteLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "devdebug",
+  "url": siteUrl,
+  "description": "Detailed cybersecurity writeups, CTF challenge walkthroughs, tool guides, and vulnerability analysis by devdebug.",
+  "author": {
+    "@type": "Person",
+    "name": "Debmalya Mondal",
+    "url": siteUrl,
+    "sameAs": [
+      "https://x.com/d3vdebug",
+      "https://github.com/d3vdebug"
+    ]
+  }
+});
+
+const breadcrumbLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbs.map((crumb, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": crumb.name,
+    "item": crumb.item
+  }))
+});
 ---
 
 <!doctype html>
@@ -20,59 +63,41 @@ import '../styles/global.css';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="canonical" href={`https://d3vdebug.github.io${url}`} />
+    <link rel="canonical" href={absoluteUrl(url)} />
     <meta name="robots" content={robots} />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={`https://d3vdebug.github.io${url}`} />
-    <meta property="og:title" content={title === 'DevDebug' ? 'devdebug' : `${title} // devdebug`} />
+    <meta property="og:url" content={absoluteUrl(url)} />
+    <meta property="og:title" content={title.toLowerCase() === 'devdebug' ? 'devdebug' : `${title} // devdebug`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image.startsWith('http') ? image : `https://d3vdebug.github.io${image}`} />
+    <meta property="og:image" content={image.startsWith('http') ? image : absoluteUrl(image)} />
     <meta property="og:site_name" content="devdebug" />
+    <meta property="og:locale" content="en_US" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={`https://d3vdebug.github.io${url}`} />
-    <meta property="twitter:title" content={title === 'DevDebug' ? 'devdebug' : `${title} // devdebug`} />
+    <meta property="twitter:url" content={absoluteUrl(url)} />
+    <meta property="twitter:title" content={title.toLowerCase() === 'devdebug' ? 'devdebug' : `${title} // devdebug`} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={image.startsWith('http') ? image : `https://d3vdebug.github.io${image}`} />
+    <meta property="twitter:image" content={image.startsWith('http') ? image : absoluteUrl(image)} />
+    <meta property="twitter:site" content="@d3vdebug" />
+    <meta property="twitter:creator" content="@d3vdebug" />
     
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "devdebug",
-        "url": "https://d3vdebug.github.io",
-        "description": "Detailed cybersecurity writeups, CTF challenge walkthroughs, tool guides, and vulnerability analysis by devdebug.",
-        "author": {
-          "@type": "Person",
-          "name": "DevDebug"
-        }
-      }
-    </script>
+    <script type="application/ld+json" set:html={websiteLd} />
     
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://d3vdebug.github.io/" },
-          { "@type": "ListItem", "position": 2, "name": "Blogs", "item": "https://d3vdebug.github.io/blogs" }
-        ]
-      }
-    </script>
+    <script type="application/ld+json" set:html={breadcrumbLd} />
     
-    <title>{title === 'DevDebug' ? 'devdebug' : `${title} // devdebug`}</title>
+    <title>{title.toLowerCase() === 'devdebug' ? 'devdebug' : `${title} // devdebug`}</title>
     
-    <!-- Google Analytics - Replace G-XXXXXXXXXX with your actual Measurement ID -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`}></script>
     <script>
       (window as any).dataLayer = (window as any).dataLayer || [];
       function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+      gtag('config', import.meta.env.PUBLIC_GA_ID);
     </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -90,12 +115,13 @@ import '../styles/global.css';
         <div class="hidden md:block w-80 md:w-[420px] mx-4 min-w-0">
           <div class="relative">
              <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-base"></i>
-            <input 
-              type="search" 
-              id="nav-search"
-              placeholder="Search..." 
-              class="w-full bg-gray-900 border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors"
-            />
+             <input 
+               type="search" 
+               id="nav-search"
+               placeholder="Search..." 
+               aria-label="Search"
+               class="w-full bg-gray-900 border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-colors"
+             />
           </div>
         </div>
         
@@ -145,7 +171,7 @@ import '../styles/global.css';
       </div>
     </main>
 
-    <footer class="bg-brown-800 border-t border-gray-800 py-4 relative z-10">
+    <footer class="bg-gray-900 border-t border-gray-800 py-4 relative z-10">
       <p class="text-center font-sans text-xs text-green-400">© {new Date().getFullYear()} DEVDEBUG</p>
     </footer>
     
@@ -184,3 +210,6 @@ import '../styles/global.css';
     </script>
   </body>
 </html>
+
+
+

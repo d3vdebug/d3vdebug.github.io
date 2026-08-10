@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const all = await getCollection('writeups');
+  const all = (await getCollection('writeups')).filter(p => !p.data.unlisted);
   const tags = new Set(all.flatMap(p => p.data.tags || []));
 
   const paths = [
@@ -28,7 +28,7 @@ export async function getStaticPaths() {
 }
 
 const { query } = Astro.params;
-const allPosts = await getCollection('writeups');
+const allPosts = (await getCollection('writeups')).filter(p => !p.data.unlisted);
 const results = allPosts.filter(p => {
   const hay = (p.data.title + ' ' + (p.data.tags || []).join(' ')).toLowerCase();
   return hay.includes(query.toLowerCase()) || p.slug === query.toLowerCase();
@@ -43,7 +43,7 @@ const pageTitle = `Search: ${query}`;
 const pageDesc = `Search results for \"${query}\"`;
 ---
 
-<Layout title={pageTitle} description={pageDesc} url={`/search/${query}`}>
+<Layout title={pageTitle} description={pageDesc} url={`/search/${query}`} robots="noindex, follow" breadcrumbs={[{ name: 'Home', item: `${Astro.site}/` }, { name: 'Search', item: `${Astro.site}/search/${query}` }]}>
   <div class="max-w-7xl mx-auto">
     <h1 class="text-2xl font-semibold text-gray-100 mb-6">Search results for “{query}”</h1>
 

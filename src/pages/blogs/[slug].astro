@@ -14,33 +14,47 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+const siteUrl = Astro.site!.toString();
+const postUrl = new URL(`/blogs/${post.slug}`, siteUrl).toString();
+const postRobots = post.data.unlisted ? 'noindex, follow' : 'index, follow';
+
+const blogPostingLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "mainEntityOfPage": { "@type": "WebPage", "@id": postUrl },
+  "image": post.data.image ? [post.data.image.startsWith('http') ? post.data.image : new URL(post.data.image, siteUrl).toString()] : [],
+  "url": postUrl,
+  "datePublished": post.data.date.toISOString(),
+  ...(post.data.dateModified && { dateModified: post.data.dateModified.toISOString() }),
+  "author": {
+    "@type": "Person",
+    "name": "Debmalya Mondal",
+    "url": siteUrl,
+    "sameAs": [
+      "https://x.com/d3vdebug",
+      "https://github.com/d3vdebug"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "devdebug",
+    "url": siteUrl,
+    "logo": {
+      "@type": "ImageObject",
+      "url": new URL("/og-page.png", siteUrl).toString()
+    }
+  },
+  "keywords": post.data.tags ? post.data.tags.join(', ') : ''
+});
 
 // Toggle dates visibility here
 const SHOW_DATES = false;
 ---
 
-<Layout title={post.data.title} description={post.data.description} image={post.data.image} url={`/blogs/${post.slug}`}>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": `${post.data.title}`,
-      "description": `${post.data.description}`,
-      "mainEntityOfPage": { "@type": "WebPage", "@id": `https://d3vdebug.github.io/blogs/${post.slug}` },
-      "image": ${post.data.image ? `["https://d3vdebug.github.io${post.data.image}"]` : '[]'},
-      "url": `https://d3vdebug.github.io/blogs/${post.slug}`,
-      "datePublished": `${post.data.date.toISOString()}`,
-      ${post.data.dateModified ? `"dateModified": "${post.data.dateModified.toISOString()}",` : ''}
-      "author": { "@type": "Person", "name": "DevDebug" },
-      "publisher": {
-        "@type": "Organization",
-        "name": "devdebug",
-        "url": "https://d3vdebug.github.io",
-        "logo": { "@type": "ImageObject", "url": "https://d3vdebug.github.io/og-page.png" }
-      },
-      "keywords": "${post.data.tags ? post.data.tags.join(', ') : ''}"
-    }
-  </script>
+<Layout title={post.data.title} description={post.data.description} image={post.data.image} url={`/blogs/${post.slug}`} robots={postRobots} breadcrumbs={[{ name: 'Home', item: siteUrl }, { name: 'Blogs', item: new URL('/blogs', siteUrl).toString() }, { name: post.data.title, item: postUrl }]}>
+  <script type="application/ld+json" set:html={blogPostingLd} />
   <div class="max-w-7xl mx-auto">
     <div class="grid lg:grid-cols-[1fr_280px] gap-12">
       <article class="w-full min-w-0">
@@ -78,17 +92,6 @@ const SHOW_DATES = false;
                   <span class="text-gray-400">{post.data.platform}</span>
                 </>
               )}
-              {post.data.difficulty && (
-                <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
-                  post.data.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
-                  post.data.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
-                  post.data.difficulty === 'Hard' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
-                  'text-purple-400 bg-purple-400/10 border-purple-400/20'
-                }`}>
-                  <i class="ph ph-chart-bar text-sm"></i>
-                  <span class="text-xs font-medium">{post.data.difficulty}</span>
-                </span>
-              )}
             </div>
           )}
           
@@ -99,18 +102,35 @@ const SHOW_DATES = false;
           <p class="text-base sm:text-lg text-gray-400 leading-relaxed break-words">
             {post.data.description}
           </p>
-          
-          <div class="flex flex-wrap gap-2 mt-4 sm:mt-5">
-            {post.data.tags.map(tag => (
-              <span class="text-xs px-2.5 py-1 bg-gray-800 text-gray-400 rounded-md">
-                #{tag}
+          <div class="flex items-center justify-between gap-3 mt-4">
+            {post.data.difficulty && (
+              <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+                post.data.difficulty === 'Easy' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
+                post.data.difficulty === 'Medium' ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' :
+                post.data.difficulty === 'Hard' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
+                'text-purple-400 bg-purple-400/10 border-purple-400/20'
+              }`}>
+                <i class="ph ph-chart-bar text-sm"></i>
+                <span class="text-xs font-medium">{post.data.difficulty}</span>
               </span>
-            ))}
+            )}
+            <button id="share-btn" class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-green-400 transition-colors border border-gray-800 hover:border-green-500/40 rounded-md px-2.5 py-1" title="Copy link">
+              <i class="ph ph-link text-sm"></i>
+              <span>Share</span>
+            </button>
           </div>
         </header>
         
         <div class="prose prose-invert prose-green max-w-none">
           <Content />
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-8">
+          {post.data.tags.map(tag => (
+            <span class="text-xs px-2.5 py-1 bg-gray-800 text-gray-400 rounded-md">
+              #{tag}
+            </span>
+          ))}
         </div>
         </div>
       </article>
@@ -227,6 +247,25 @@ const SHOW_DATES = false;
       onScroll();
 
       calculateReadTime();
+
+      const shareBtn = document.getElementById('share-btn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          const url = window.location.href;
+          try {
+            await navigator.clipboard.writeText(url);
+            const originalHTML = shareBtn.innerHTML;
+            shareBtn.innerHTML = '<i class="ph ph-check text-sm"></i><span>Copied</span>';
+            shareBtn.classList.add('text-green-400', 'border-green-500/40');
+            setTimeout(() => {
+              shareBtn.innerHTML = originalHTML;
+              shareBtn.classList.remove('text-green-400', 'border-green-500/40');
+            }, 2000);
+          } catch {
+            shareBtn.innerHTML = '<i class="ph ph-warning text-sm"></i><span>Failed</span>';
+          }
+        });
+      }
     });
     
     function calculateReadTime() {

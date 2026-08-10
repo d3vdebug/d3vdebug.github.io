@@ -1,3 +1,30 @@
+/*
+  Custom @font-face rules for self-hosted Phosphor Icons.
+  This ensures the font files are loaded correctly using absolute paths
+  from the public directory, regardless of the CSS file's location.
+*/
+@font-face {
+  font-family: 'Phosphor';
+  font-weight: normal;
+  font-style: normal;
+  src: url('/icons/Phosphor.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Phosphor';
+  font-weight: bold;
+  font-style: normal;
+  src: url('/icons/Phosphor-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Phosphor';
+  font-weight: normal;
+  font-style: normal;
+  /* This is for the 'ph-fill' class */
+  font-feature-settings: 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on, 'ss06' on, 'ss07'on, 'ss08' on, 'ss09' on, 'ss10' on, 'ss11' on, 'ss12' on, 'ss13' on, 'ss14' on;
+  src: url('/icons/Phosphor-Fill.woff2') format('woff2');
+}
+/* Add other weights (Thin, Light, Duotone) here if you use them */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -253,6 +280,17 @@
   }
 }
 
+/* Loader fade-out animation */
+.fade-out {
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+}
+
+/* Ensure loader is visible by default before JS takes over */
+#loader {
+  opacity: 1;    /* Ensure it's fully opaque by default */
+}
+
 /* Ensure inline code doesn't show literal backtick pseudo-content (typography plugin overrides) */
 .prose code::before,
 .prose code::after,
@@ -281,7 +319,7 @@
 .toc-heading {
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
   font-weight: 600;
-  font-size: 0.7rem; /* adjust as needed */
+  font-size: 0.875rem; /* adjust as needed */
   letter-spacing: 0.06em;
 }
 
@@ -303,10 +341,10 @@
 
 /* Sub-level TOC links (h3) — make slightly smaller */
 #toc a[data-level="3"] {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   line-height: 1.2;
   padding-left: 1.25rem; /* align under top-level */
-  color: #9eaf9c; /* slightly muted */
+  color: #e6eee6; /* slightly muted */
 }
 
 @layer utilities {

@@ -35,7 +35,7 @@ const filteredPosts = allPosts
   }));
 ---
 
-<Layout title={`#${tag}`} description={`${tag} - Cybersecurity writeups and CTF walkthroughs tagged with ${tag}.`} url={`/tags/${tag}`}>
+<Layout title={`#${tag}`} description={`${tag} - Cybersecurity writeups and CTF walkthroughs tagged with ${tag}.`} url={`/tags/${tag}`} breadcrumbs={[{ name: 'Home', item: `${Astro.site}/` }, { name: 'Tags', item: `${Astro.site}/tags` }, { name: `#${tag}`, item: `${Astro.site}/tags/${tag}` }]}>
   <div class="max-w-7xl mx-auto">
     <div class="mb-8">
       <h1 class="text-2xl font-semibold text-gray-100 mb-2">Tag: #{tag}</h1>

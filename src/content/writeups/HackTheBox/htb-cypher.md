@@ -163,3 +163,5 @@ root.txt: f******************************
 - **hashcat** - Password cracking
 - **evil-winrm** - Remote shell access
 - **Rubeus** - Kerberos delegation attacks
+
+---

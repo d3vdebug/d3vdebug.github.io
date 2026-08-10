@@ -22,7 +22,7 @@ const categories = [...new Set(postsData.map(p => p.category))].sort();
 const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
 ---
 
-<Layout title="Blogs" description="Browse all cybersecurity writeups, CTF walkthroughs, and security research articles." url="/blogs">
+<Layout title="Blogs" description="Browse all cybersecurity writeups, CTF walkthroughs, and security research articles." url="/blogs" breadcrumbs={[{ name: 'Home', item: `${Astro.site}/` }, { name: 'Blogs', item: `${Astro.site}/blogs` }]}>
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-col gap-4 mb-8 md:flex-row md:items-center md:justify-between">
       <h1 class="text-2xl font-semibold text-gray-100">All Blogs</h1>
@@ -103,6 +103,10 @@ const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
         <span class="text-xs font-medium">${d}</span>
       </span>`;
     };
+
+    const categoryBadge = (c) => {
+      return `<span class="inline-flex items-center px-2.5 py-1 rounded-md border border-green-400/20 bg-green-400/10 text-xs font-medium text-green-400">${c}</span>`;
+    };
     
     const renderPosts = (items, count = items.length) => {
       if (items.length === 0) {
@@ -126,7 +130,10 @@ const difficulties = ['Easy', 'Medium', 'Hard', 'Insane'];
             <div class="p-6">
               <h2 class="text-xl font-semibold text-gray-100 mb-2 group-hover:text-green-400 transition-colors">${post.title}</h2>
               <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">${post.description}</p>
-              ${post.difficulty ? difficultyBadge(post.difficulty) : ''}
+              <div class="flex items-center justify-between gap-2">
+                ${post.category ? `<span class="inline-flex items-center px-2.5 py-1 rounded-md border border-green-400/20 bg-green-400/10 text-xs font-medium text-green-400">${post.category}</span>` : '<span></span>'}
+                ${post.difficulty ? difficultyBadge(post.difficulty) : ''}
+              </div>
             </div>
           </article>
         </a>

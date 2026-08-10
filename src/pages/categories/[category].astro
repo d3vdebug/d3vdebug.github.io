@@ -35,7 +35,7 @@ const filteredPosts = allPosts
   }));
 ---
 
-<Layout title={category} description={`${category} - Cybersecurity writeups and CTF walkthroughs.`} url={`/categories/${category}`}>
+<Layout title={category} description={`${category} - Cybersecurity writeups and CTF walkthroughs.`} url={`/categories/${category}`} breadcrumbs={[{ name: 'Home', item: `${Astro.site}/` }, { name: 'Categories', item: `${Astro.site}/categories` }, { name: category, item: `${Astro.site}/categories/${category}` }]}>
   <div class="max-w-7xl mx-auto">
     <div class="mb-8">
       <h1 class="text-2xl font-semibold text-gray-100 mb-2">{category}</h1>
